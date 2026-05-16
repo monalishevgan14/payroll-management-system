@@ -31,14 +31,31 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
+            // 'name' => ['required', 'string', 'max:255'],
+            // 'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            // 'password' => ['required', 'confirmed', Rules\Password::defaults()],
+
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'phone' => ['nullable', 'string', 'max:20'],
+            'department' => ['nullable', 'string'],
+            'designation' => ['nullable', 'string'],
+            'salary' => ['nullable', 'numeric'],
+            'joining_date' => ['nullable', 'date'],
+            'password' => ['required', 'confirmed'],
+
+
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone' => $request->phone,
+            'department' => $request->department,
+            'designation' => $request->designation,
+            'salary' => $request->salary,
+            'joining_date' => $request->joining_date,
+            'role' => 'employee',
             'password' => Hash::make($request->password),
         ]);
 
@@ -46,6 +63,13 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // return redirect(route('dashboard', absolute: false));
+        if ($user->role == 'admin') {
+
+            return redirect('/admin/dashboard');
+        } else {
+
+            return redirect('/employee/dashboard');
+        }
     }
 }
