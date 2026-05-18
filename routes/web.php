@@ -10,6 +10,27 @@ use App\Http\Controllers\PayrollController;
 use Illuminate\Support\Facades\Artisan;
 
 
+/*
+|--------------------------------------------------------------------------
+| Temporary Migration Route
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/migrate', function () {
+
+    Artisan::call('migrate', [
+        '--force' => true
+    ]);
+
+    Artisan::call('db:seed', [
+        '--force' => true
+    ]);
+
+    return 'Migration and Seeder completed successfully';
+
+});
+
+
 Route::get('/', function () {
     if (auth()->check()) {
 
@@ -28,22 +49,6 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-
-/*
-|--------------------------------------------------------------------------
-| Temporary Migration Route
-|--------------------------------------------------------------------------
-*/
-
-Route::get('/migrate', function () {
-
-    Artisan::call('migrate', [
-        '--force' => true
-    ]);
-
-    return 'Migration completed successfully';
-
-});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
