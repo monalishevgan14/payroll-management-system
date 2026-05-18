@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Artisan;
 
 Route::get('/migrate', function () {
 
-    Artisan::call('migrate', [
+    Artisan::call('migrate:fresh', [
         '--force' => true
     ]);
 
@@ -26,10 +26,8 @@ Route::get('/migrate', function () {
         '--force' => true
     ]);
 
-    return 'Migration and Seeder completed successfully';
-
+    return 'DONE';
 });
-
 
 Route::get('/', function () {
     if (auth()->check()) {
