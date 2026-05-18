@@ -15,7 +15,7 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
-RUN php artisan config:clear
+RUN php artisan storage:link || true
 
 EXPOSE 10000
 
