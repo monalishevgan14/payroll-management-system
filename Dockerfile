@@ -15,18 +15,7 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
-RUN cp .env.example .env || true
-
-RUN php artisan key:generate --force || true
-
-RUN php artisan config:clear
-RUN php artisan cache:clear
-
-RUN php artisan migrate --force || true
-
 RUN php artisan storage:link || true
-
-RUN php artisan config:cache || true
 
 EXPOSE 10000
 
